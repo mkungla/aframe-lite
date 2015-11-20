@@ -2,17 +2,16 @@
 
 window.addEventListener('HTMLImportsLoaded', injectFromPolyfilledImports);
 
-// NOTE: HTML Imports polyfill must come before we include `vr-markup`.
+// NOTE: HTML Imports polyfill must come before we include `aframe-core`.
 if (!('import' in document.createElement('link'))) {
   require('../lib/vendor/HTMLImports');
 }
 
-var VRMarkup = require('@mozvr/vr-markup');
+var aframeCore = require('@mozvr/aframe-core');
 var registerTemplate = require('./lib/register-template');
 var utils = require('./lib/utils');
 
-var registerElement = VRMarkup.registerElement.registerElement;
-var VRUtils = VRMarkup.utils;
+var registerElement = aframeCore.registerElement.registerElement;
 
 function injectFromPolyfilledImports () {
   if (!HTMLImports || HTMLImports.useNative) { return; }
@@ -24,19 +23,19 @@ function injectFromPolyfilledImports () {
 }
 
 function insertTemplateElements (doc) {
-  var sceneEl = utils.$('vr-scene');
-  var assetsEl = utils.$('vr-assets');
+  var sceneEl = utils.$('a-scene');
+  var assetsEl = utils.$('a-assets');
   if (!assetsEl) {
-    assetsEl = document.createElement('vr-assets');
+    assetsEl = document.createElement('a-assets');
     sceneEl.parentNode.insertBefore(assetsEl, sceneEl);
   }
 
-  utils.$$('vr-mixin', doc).forEach(function (mixinEl) {
+  utils.$$('a-mixin', doc).forEach(function (mixinEl) {
     var mixinCloneEl = document.importNode(mixinEl, true);
     assetsEl.appendChild(mixinCloneEl);
   });
 
-  utils.$$('template[is="vr-template"]', doc).forEach(function (templateEl) {
+  utils.$$('template[is="a-template"]', doc).forEach(function (templateEl) {
     var templateCloneEl = document.importNode(templateEl, true);
     document.body.appendChild(templateCloneEl);
     // XXX: Hack for VS to hide templates from source.
@@ -47,7 +46,7 @@ function insertTemplateElements (doc) {
 }
 
 function runAfterSceneLoaded (cb) {
-  var sceneEl = utils.$('vr-scene');
+  var sceneEl = utils.$('a-scene');
   if (!sceneEl) { return; }
   if (sceneEl.hasLoaded) {
     cb(sceneEl);
@@ -59,9 +58,9 @@ function runAfterSceneLoaded (cb) {
 }
 
 module.exports = registerElement(
-  'vr-template',
+  'a-template',
   {
-    extends: 'template',  // This lets us do `<template is="vr-template">`.
+    extends: 'template',  // This lets us do `<template is="a-template">`.
     prototype: Object.create(
       HTMLTemplateElement.prototype,
       {
@@ -74,7 +73,7 @@ module.exports = registerElement(
               runAfterSceneLoaded(appendElement);
               function appendElement () {
                 var isInDocument = self.ownerDocument === document;
-                // TODO: Handle `<vr-mixin>` from imported templates for Chrome.
+                // TODO: Handle `<a-mixin>` from imported templates for Chrome.
                 if (!isInDocument) { document.body.appendChild(self); }
               }
             });
@@ -109,7 +108,7 @@ module.exports = registerElement(
           value: function () {
             // To prevent emitting the loaded event more than once.
             if (this.hasLoaded) { return; }
-            VRUtils.fireEvent(this, 'loaded');
+            utils.fireEvent(this, 'loaded');
             this.hasLoaded = true;
           },
           writable: window.debug

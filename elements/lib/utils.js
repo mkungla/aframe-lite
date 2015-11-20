@@ -1,7 +1,8 @@
-var VRMarkup = require('@mozvr/vr-markup');
-var VREvent = require('../vr-event/vr-event');
+var aframeCore = require('@mozvr/aframe-core');
+var AEvent = require('../a-event/a-event');
 
-var registerElement = VRMarkup.registerElement.registerElement;
+var aframeCoreUtils = aframeCore.utils;
+var registerElement = aframeCore.registerElement.registerElement;
 
 /**
  * Wraps `querySelector` à la jQuery's `$`.
@@ -141,34 +142,25 @@ var wrapElement = module.exports.wrapElement = function (newTagName, srcElement,
 };
 
 /**
- * Wraps `<vr-event>` for a particular event `type`.
+ * Wraps `<a-event>` for a particular event `type`.
  *
  * @param {String} newTagName - Name of the new custom element.
  * @param {Element} eventName - Name of event type.
  * @param {Object=} [data={}] - Data for the new prototype.
  * @returns {Array} Wrapped custom element.
  */
-module.exports.wrapVREventElement = function (newTagName, eventName, data) {
+module.exports.wrapAEventElement = function (newTagName, eventName, data) {
   data = data || {};
   data.type = {
     value: eventName,
     writable: window.debug
   };
-  return wrapElement(newTagName, VREvent, data);
+  return wrapElement(newTagName, AEvent, data);
 };
 
-/**
- * Splits a string into an array based on a delimiter.
- *
- * @param   {string=} [str='']        Source string
- * @param   {string=} [delimiter=' '] Delimiter to use
- * @returns {array}                   Array of delimited strings
- */
-module.exports.splitString = function (str, delimiter) {
-  if (typeof delimiter === 'undefined') { delimiter = ' '; }
-  // First collapse the whitespace (or whatever the delimiter is).
-  var regex = new RegExp(delimiter, 'g');
-  str = (str || '').replace(regex, delimiter);
-  // Then split.
-  return str.split(delimiter);
-};
+// Useful utils from aframe-core.
+module.exports.error = aframeCoreUtils.error;
+module.exports.fireEvent = aframeCoreUtils.fireEvent;
+module.exports.log = aframeCoreUtils.log;
+module.exports.splitString = aframeCoreUtils.splitString;
+module.exports.warn = aframeCoreUtils.warn;
