@@ -1,19 +1,20 @@
 var modules = {
-  'vr-event': require('./vr-event'),
-  'vr-template': require('./vr-template')
+  'a-event': require('./a-event'),
+  'a-template': require('./a-template')
 };
 
 /**
  * Returns the filename of the main HTML import to load.
  */
 function getHtmlFilename () {
-  var scriptEl = document.querySelector('script[data-vr-components-html]');
+  var scriptEl = document.querySelector('script[data-aframe-html]');
   var htmlFilename;
   if (scriptEl) {
-    htmlFilename = scriptEl.dataset.vrComponentsHtml;
+    // NOTE: Not using `dataset` for IE <= 10 compatibility.
+    htmlFilename = scriptEl.getAttribute('data-aframe-html');
   }
   if (!htmlFilename) {
-    scriptEl = document.querySelector('script[src*="vr-components."]');
+    scriptEl = document.querySelector('script[src*="aframe."]');
     if (scriptEl) {
       htmlFilename = scriptEl.getAttribute('src').replace('.js', '.html');
     }

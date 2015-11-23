@@ -1,9 +1,9 @@
 /* global HTMLElement */
 
-var VRMarkup = require('@mozvr/vr-markup');
+var aframeCore = require('@mozvr/aframe-core');
 var utils = require('../lib/utils');
 
-var registerElement = VRMarkup.registerElement.registerElement;
+var registerElement = aframeCore.registerElement.registerElement;
 var stateEls = {};
 var listeners = {};
 var targetData = {};
@@ -164,7 +164,7 @@ window.addEventListener('stateremoved', function (e) {
 });
 
 function getRealNode (el) {
-  if (el.isVREvent) {
+  if (el.isAEvent) {
     return getRealNode(el.parentNode);
   }
   // if (el.root) {
@@ -173,18 +173,18 @@ function getRealNode (el) {
   return el;
 }
 
-var VREvent = registerElement(
-  'vr-event',
+var AEvent = registerElement(
+  'a-event',
   {
     prototype: Object.create(
       HTMLElement.prototype,
       {
         attachedCallback: {
           value: function () {
-            this.isVREvent = true;
+            this.isAEvent = true;
             this.type = this.type || this.getAttribute('type');
             this.target = this.target || this.getAttribute('target');
-            this.sceneEl = utils.$('vr-scene');
+            this.sceneEl = utils.$('a-scene');
             this.attachEventListener();
           },
           writable: window.debug
@@ -215,7 +215,7 @@ var VREvent = registerElement(
 
             // TODO: Land `on` PR in `aframe-core`: https://github.com/MozVR/aframe-core/pull/330
 
-            this.sceneEl = this.sceneEl || utils.$('vr-scene');
+            this.sceneEl = this.sceneEl || utils.$('a-scene');
 
             if (self.type === 'load') {
               var sourceEl = getRealNode(self.parentNode);
@@ -243,4 +243,4 @@ var VREvent = registerElement(
   }
 );
 
-module.exports = VREvent;
+module.exports = AEvent;
