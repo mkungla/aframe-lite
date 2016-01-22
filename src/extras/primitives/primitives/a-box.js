@@ -2,16 +2,22 @@ var meshMixin = require('../meshMixin');
 var registerPrimitive = require('../registerPrimitive');
 var utils = require('../../../utils/');
 
-registerPrimitive('a-plane', utils.extendDeep({}, meshMixin(), {
+var boxDefinition = utils.extendDeep({}, meshMixin(), {
   defaultAttributes: {
     geometry: {
-      primitive: 'plane'
+      primitive: 'box'
     }
   },
 
   mappings: {
+    depth: 'geometry.depth',
     height: 'geometry.height',
     translate: 'geometry.translate',
     width: 'geometry.width'
   }
-}));
+});
+
+registerPrimitive('a-box', boxDefinition);
+registerPrimitive('a-cube', utils.extendDeep({
+  deprecated: '<a-cube> is deprecated. Use <a-box> instead.'
+}, boxDefinition));
