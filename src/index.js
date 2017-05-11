@@ -52,7 +52,7 @@ if (utils.device.isBrowserEnvironment) {
 }
 
 // Required before `AEntity` so that all components are registered.
-var AScene = require('./core/scene/a-scene');
+var AScene = require('./core/scene/a-scene').AScene;
 var components = require('./core/component').components;
 var registerComponent = require('./core/component').registerComponent;
 var registerGeometry = require('./core/geometry').registerGeometry;
@@ -83,7 +83,7 @@ require('./core/a-mixin');
 require('./extras/components/');
 require('./extras/primitives/');
 
-console.log('A-Frame Version: 0.5.0 (Date 09-05-2017, Commit #42ceee1)');
+console.log('A-Frame Version: 0.5.0 (Date 11-05-2017, Commit #78eb40e)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
