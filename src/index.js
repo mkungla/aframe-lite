@@ -4,8 +4,8 @@ var debug = utils.debug;
 var error = debug('A-Frame:error');
 var warn = debug('A-Frame:warn');
 
-if (document.currentScript && document.currentScript.parentNode !== document.head &&
-    !window.debug) {
+if (window.document.currentScript && window.document.currentScript.parentNode !==
+    window.document.head && !window.debug) {
   warn('Put the A-Frame <script> tag in the <head> of the HTML *before* the scene to ' +
        'ensure everything for A-Frame is properly registered before they are used from ' +
        'HTML.');
@@ -83,7 +83,7 @@ require('./core/a-mixin');
 require('./extras/components/');
 require('./extras/primitives/');
 
-console.log('A-Frame Version: 0.5.0 (Date 09-06-2017, Commit #1d4541f)');
+console.log('A-Frame Version: 0.5.0 (Date 10-06-2017, Commit #2920bbb)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
