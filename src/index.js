@@ -83,7 +83,7 @@ require('./core/a-mixin');
 require('./extras/components/');
 require('./extras/primitives/');
 
-console.log('A-Frame Version: 0.6.1 (Date 20-08-2017, Commit #8c92874)');
+console.log('A-Frame Version: 0.6.1 (Date 24-08-2017, Commit #5214a16)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
@@ -113,11 +113,3 @@ module.exports = window.AFRAME = {
   utils: utils,
   version: pkg.version
 };
-
-// Enter VR on `vrdisplayactivate`, to handle in-VR traversal much earlier in the lifecycle.
-// This event may also fire in other circumstances (e.g. putting on the Rift headset).
-window.addEventListener('vrdisplayactivate', function (evt) {
-  if (window.AFRAME.scenes.length > 0) {
-    window.AFRAME.scenes[0].enterVR();
-  }
-});
